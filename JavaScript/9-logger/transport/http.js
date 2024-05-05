@@ -11,6 +11,8 @@ const receiveArgs = async (req) => {
 
 module.exports = (routing, port) => {
   http.createServer(async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
     const { url, socket } = req;
     const [name, method, id] = url.substring(1).split('/');
     const entity = routing[name];
@@ -20,7 +22,7 @@ module.exports = (routing, port) => {
     const src = handler.toString();
     const signature = src.substring(0, src.indexOf(')'));
     const args = [];
-    if (signature.includes('(id')) args.push(id);
+    if (signature.includes('(id') || signature.includes('(mask')) args.push(id);
     if (signature.includes('{')) args.push(await receiveArgs(req));
     console.log(`${socket.remoteAddress} ${method} ${url}`);
     const result = await handler(...args);

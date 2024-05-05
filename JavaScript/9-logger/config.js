@@ -1,5 +1,5 @@
 module.exports = {
-  transport: 'ws',
+  transport: 'http',
   port: 8001,
   staticPort: 8000,
   postgres: {
